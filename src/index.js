@@ -22,7 +22,7 @@ async function main() {
   program
     .version(packageJson.version)
     .description(
-      "Generate apps built with Next, Nuxt, Quasar, React, React Native, Vue or Vuetify for any API documented using Hydra or OpenAPI"
+      "Generate apps built with Next, Nuxt, Quasar, React, React Native, SvelteKit, Vue or Vuetify for any API documented using Hydra or OpenAPI"
     )
     .usage("entrypoint outputDirectory")
     .option(
@@ -39,7 +39,7 @@ async function main() {
     .option("--bearer [bearer]", "Token for bearer auth (Hydra only)")
     .option(
       "-g, --generator [generator]",
-      'The generator to use, one of "next", "nuxt", "quasar", "react", "react-native", "typescript", "vue", "vuetify" or a path to a custom generator of your choice',
+      'The generator to use, one of "next", "nuxt", "quasar", "react", "react-native", "sveltekit", "typescript", "vue", "vuetify" or a path to a custom generator of your choice',
       "next"
     )
     .option(

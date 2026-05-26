@@ -10,6 +10,7 @@ API Platform Create Client is a generator to scaffold apps with Create-Retrieve-
 * Quasar
 * React
 * React Native
+* SvelteKit
 * TypeScript Interfaces
 * Vue.js
 * Vuetify.js
