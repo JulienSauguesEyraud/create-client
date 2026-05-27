@@ -105,6 +105,8 @@ test("Generate SvelteKit resource types with readonly dates and relations", () =
   expect(shell).toContain('import "../app.css";');
   expect(shell).toContain("api-platform-auth");
   expect(shell).toContain("Main navigation");
+  expect(shell).toContain("Home");
+  expect(shell).not.toContain("Create Book");
 
   expect(
     fs.readFileSync(tmpobj.name + "/src/routes/+page.svelte").toString()
@@ -112,7 +114,7 @@ test("Generate SvelteKit resource types with readonly dates and relations", () =
 
   expect(
     fs.readFileSync(tmpobj.name + "/src/components/Home.svelte").toString()
-  ).toContain("Browse {resourceTitle}");
+  ).toContain("Generated SvelteKit client");
 
   const layoutModule = fs
     .readFileSync(tmpobj.name + "/src/routes/+layout.ts")

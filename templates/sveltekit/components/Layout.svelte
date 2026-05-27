@@ -1,12 +1,8 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import { page } from "$app/stores";
   import { setAuth } from "../stores";
-  import { toResourceCreatePath, toResourcePath } from "../utils/sveltekit";
   import "../app.css";
 
-  const resourceName = "{{name}}";
-  const resourceTitle = "{{{title}}}";
   const authStorageKey = "api-platform-auth";
   const authEventName = "api-platform-auth-changed";
 
@@ -38,10 +34,6 @@
       window.removeEventListener(authEventName, onAuthChange as EventListener);
     };
   });
-
-  const pathname = $derived($page.url.pathname);
-  const listPath = $derived(toResourcePath(resourceName));
-  const createPath = $derived(toResourceCreatePath(resourceName));
 </script>
 
 <div class="app-shell">
@@ -49,8 +41,7 @@
     <a class="app-brand" href="/">API Platform</a>
 
     <nav class="app-nav" aria-label="Main navigation">
-      <a href={listPath} class:active={pathname.startsWith(listPath)}>{resourceTitle}</a>
-      <a href={createPath} class:active={pathname.startsWith(createPath)}>Create {resourceTitle}</a>
+      <a href="/">Home</a>
     </nav>
   </header>
 
