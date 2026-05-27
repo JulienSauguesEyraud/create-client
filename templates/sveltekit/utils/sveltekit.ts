@@ -14,10 +14,10 @@ export const toResourceCreatePath = (resourceName: string): string =>
   `${toResourcePath(resourceName)}/create`;
 
 export const toResourceShowPath = (resourceName: string, id: string): string =>
-  `${toResourcePath(resourceName)}/show/${encodeURIComponent(id)}`;
+  `${toResourcePath(resourceName)}/show?id=${encodeURIComponent(id)}`;
 
 export const toResourceEditPath = (resourceName: string, id: string): string =>
-  `${toResourcePath(resourceName)}/edit/${encodeURIComponent(id)}`;
+  `${toResourcePath(resourceName)}/edit?id=${encodeURIComponent(id)}`;
 
 export const redirectToResourcePath = (resourceName: string) =>
   goto(toResourcePath(resourceName));

@@ -73,8 +73,10 @@ export default class {
 
       return;
     }
+    if (warn) console.log(chalk.yellow(`Overwriting existing file "${dest}"`));
 
-    if (warn) console.log(`The file "${dest}" already exists`);
+    // Overwrite existing file
+    fs.writeFileSync(dest, content);
   }
 
   createEntrypoint(entrypoint, dest) {

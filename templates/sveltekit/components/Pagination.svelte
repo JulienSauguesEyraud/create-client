@@ -1,31 +1,37 @@
 <script lang="ts">
   import type { PagedCollection } from "../interfaces/Collection";
 
-  export let retrieved: PagedCollection<any> | null = null;
-  export let currentPage: string | null = null;
+  let {
+    retrieved = null,
+    currentPage = null,
+  }: {
+    retrieved?: PagedCollection<any> | null;
+    currentPage?: string | null;
+  } = $props();
 
-  let view: any = null;
-  let rootHref = ".";
-  let firstHref = ".";
-  let previousHref = ".";
-  let nextHref = "#";
-  let lastHref = "#";
+  const toPageHref = (value: string) => `?page=${encodeURIComponent(value)}`;
 
-  $: view = retrieved && retrieved["{{hydraPrefix}}view"];
-  $: rootHref = currentPage ? ".." : ".";
-  $: firstHref = rootHref;
-  $: previousHref = view
-    ? !view["{{hydraPrefix}}previous"] ||
-      view["{{hydraPrefix}}previous"] === view["{{hydraPrefix}}first"]
-      ? rootHref
-      : encodeURIComponent(view["{{hydraPrefix}}previous"] as string)
-    : "#";
-  $: nextHref = view && view["{{hydraPrefix}}next"]
-    ? encodeURIComponent(view["{{hydraPrefix}}next"] as string)
-    : "#";
-  $: lastHref = view && view["{{hydraPrefix}}last"]
-    ? encodeURIComponent(view["{{hydraPrefix}}last"] as string)
-    : "#";
+  const view = $derived(retrieved && retrieved["{{hydraPrefix}}view"]);
+  const rootHref = $derived(currentPage ? "." : ".");
+  const firstHref = $derived(rootHref);
+  const previousHref = $derived(
+    view
+      ? !view["{{hydraPrefix}}previous"] ||
+        view["{{hydraPrefix}}previous"] === view["{{hydraPrefix}}first"]
+        ? rootHref
+        : toPageHref(view["{{hydraPrefix}}previous"] as string)
+      : "#"
+  );
+  const nextHref = $derived(
+    view && view["{{hydraPrefix}}next"]
+      ? toPageHref(view["{{hydraPrefix}}next"] as string)
+      : "#"
+  );
+  const lastHref = $derived(
+    view && view["{{hydraPrefix}}last"]
+      ? toPageHref(view["{{hydraPrefix}}last"] as string)
+      : "#"
+  );
 </script>
 
 {#if view}

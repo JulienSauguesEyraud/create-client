@@ -73,32 +73,59 @@ test("Generate SvelteKit resource types with readonly dates and relations", () =
 
   generator.generate(api, resource, tmpobj.name);
 
-  expect(fs.existsSync(tmpobj.name + "/routes/+layout.svelte")).toBe(true);
-  expect(fs.existsSync(tmpobj.name + "/routes/+layout.ts")).toBe(true);
-  expect(fs.existsSync(tmpobj.name + "/routes/+page.svelte")).toBe(true);
-  expect(fs.existsSync(tmpobj.name + "/app.css")).toBe(true);
-  expect(fs.existsSync(tmpobj.name + "/utils/sveltekit.ts")).toBe(true);
-  expect(fs.existsSync(tmpobj.name + "/interfaces/Book.ts")).toBe(true);
+  expect(fs.existsSync(tmpobj.name + "/src/routes/+layout.svelte")).toBe(true);
+  expect(fs.existsSync(tmpobj.name + "/src/routes/+layout.ts")).toBe(true);
+  expect(fs.existsSync(tmpobj.name + "/src/routes/+page.svelte")).toBe(true);
+  expect(
+    fs.existsSync(tmpobj.name + "/src/routes/book/edit/+page.svelte")
+  ).toBe(true);
+  expect(
+    fs.existsSync(tmpobj.name + "/src/routes/book/show/+page.svelte")
+  ).toBe(true);
+  expect(fs.existsSync(tmpobj.name + "/src/routes/book/[page]")).toBe(false);
+  expect(fs.existsSync(tmpobj.name + "/src/routes/book/edit/[id]")).toBe(false);
+  expect(fs.existsSync(tmpobj.name + "/src/routes/book/show/[id]")).toBe(false);
+  expect(fs.existsSync(tmpobj.name + "/src/app.css")).toBe(true);
+  expect(fs.existsSync(tmpobj.name + "/src/utils/sveltekit.ts")).toBe(true);
+  expect(fs.existsSync(tmpobj.name + "/src/components/Layout.svelte")).toBe(
+    true
+  );
+  expect(fs.existsSync(tmpobj.name + "/src/components/Home.svelte")).toBe(true);
+  expect(fs.existsSync(tmpobj.name + "/src/interfaces/Book.ts")).toBe(true);
 
   const layout = fs
-    .readFileSync(tmpobj.name + "/routes/+layout.svelte")
+    .readFileSync(tmpobj.name + "/src/routes/+layout.svelte")
     .toString();
-  expect(layout).toContain('import { setAuth } from "../stores";');
-  expect(layout).toContain('import "../app.css";');
-  expect(layout).toContain("api-platform-auth");
-  expect(layout).toContain("Main navigation");
+  expect(layout).toContain('import Layout from "../components/Layout.svelte";');
+
+  const shell = fs
+    .readFileSync(tmpobj.name + "/src/components/Layout.svelte")
+    .toString();
+  expect(shell).toContain('import { setAuth } from "../stores";');
+  expect(shell).toContain('import "../app.css";');
+  expect(shell).toContain("api-platform-auth");
+  expect(shell).toContain("Main navigation");
+
+  expect(
+    fs.readFileSync(tmpobj.name + "/src/routes/+page.svelte").toString()
+  ).toContain('import Home from "../components/Home.svelte";');
+
+  expect(
+    fs.readFileSync(tmpobj.name + "/src/components/Home.svelte").toString()
+  ).toContain("Browse {resourceTitle}");
 
   const layoutModule = fs
-    .readFileSync(tmpobj.name + "/routes/+layout.ts")
+    .readFileSync(tmpobj.name + "/src/routes/+layout.ts")
     .toString();
   expect(layoutModule).toContain("export const ssr = false;");
   expect(layoutModule).toContain("export const csr = true;");
 
   const sveltekitUtils = fs
-    .readFileSync(tmpobj.name + "/utils/sveltekit.ts")
+    .readFileSync(tmpobj.name + "/src/utils/sveltekit.ts")
     .toString();
   expect(sveltekitUtils).toContain("decodeRouteParam");
   expect(sveltekitUtils).toContain("redirectToResourceEditPath");
+  expect(sveltekitUtils).toContain("?id=");
 
   const res = `import type { ApiResource } from "../utils/types";
 
@@ -110,9 +137,9 @@ export interface Book extends ApiResource {
 }
 `;
 
-  expect(fs.readFileSync(tmpobj.name + "/interfaces/Book.ts").toString()).toBe(
-    res
-  );
+  expect(
+    fs.readFileSync(tmpobj.name + "/src/interfaces/Book.ts").toString()
+  ).toBe(res);
 
   tmpobj.removeCallback();
 });

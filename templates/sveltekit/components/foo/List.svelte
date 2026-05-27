@@ -13,25 +13,34 @@
   import type TResource from "./type";
   import type { TError } from "../../utils/types";
 
-  export let resourcePath = "{{name}}";
-  export let resourceName = "{{name}}";
-  export let resourceTitle = "{{{title}}}";
+  let {
+    resourcePath = "{{name}}",
+    resourceName = "{{name}}",
+    resourceTitle = "{{{title}}}",
+  }: {
+    resourcePath?: string;
+    resourceName?: string;
+    resourceTitle?: string;
+  } = $props();
 
   const resource = listResourceStore<TResource>(resourcePath);
-  let currentPage = resourcePath;
-  let pageParam: string | null = null;
-
   const load = async (pageUrl = resourcePath) => {
     await resource.list(pageUrl);
   };
 
-  $: pageParam = decodeRouteParam($page.params.page);
-  $: currentPage = pageParam || resourcePath;
-  $: if (currentPage) {
-    void load(currentPage);
-  }
+  const pageParam = $derived(
+    decodeRouteParam($page.url.searchParams.get("page") ?? undefined)
+  );
+  const currentPage = $derived(pageParam || resourcePath);
+  const items = $derived(
+    ($resource.retrieved && $resource.retrieved["{{hydraPrefix}}member"]) || []
+  );
 
-  $: items = ($resource.retrieved && $resource.retrieved["{{hydraPrefix}}member"]) || [];
+  $effect(() => {
+    if (currentPage) {
+    void load(currentPage);
+    }
+  });
 </script>
 
 <div>
@@ -67,13 +76,13 @@
           {{#each fields}}
             <td>
               {{#if isReferences}}
-                <Links items={item['{{{name}}}']} basePath="/{{{reference.name}}}/show/" />
+                <Links items={item['{{{name}}}']} basePath="/{{{reference.name}}}/show?id=" />
               {{else if reference}}
-                <Links items={item["{{{name}}}"] as string} basePath="/{{{reference.name}}}/show/" />
+                <Links items={item["{{{name}}}"] as string} basePath="/{{{reference.name}}}/show?id=" />
               {{else if isEmbeddeds}}
-                <Links items={item["{{{name}}}"]} basePath="/{{{embedded.name}}}/show/" />
+                <Links items={item["{{{name}}}"]} basePath="/{{{embedded.name}}}/show?id=" />
               {{else if embedded}}
-                <Links items={item["{{{name}}}"]} basePath="/{{{embedded.name}}}/show/" />
+                <Links items={item["{{{name}}}"]} basePath="/{{{embedded.name}}}/show?id=" />
               {{else}}
                 {item['{{{name}}}']}
               {{/if}}

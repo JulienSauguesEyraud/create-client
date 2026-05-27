@@ -11,16 +11,17 @@
   import type { TError } from "../../utils/types";
 
   const resource = updateResourceStore<TResource>();
-  let decodedId: string | null = null;
-
   const load = async (id: string) => {
     await resource.retrieve(id);
   };
 
-  $: decodedId = decodeRouteParam($page.params.id);
-  $: if (decodedId) {
-    void load(decodedId);
-  }
+  const decodedId = $derived(decodeRouteParam($page.url.searchParams.get("id") ?? undefined));
+
+  $effect(() => {
+    if (decodedId) {
+      void load(decodedId);
+    }
+  });
 
   const update = async (values: Partial<TResource>) => {
     if (!$resource.retrieved) {

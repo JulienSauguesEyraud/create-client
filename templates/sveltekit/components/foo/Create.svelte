@@ -8,7 +8,7 @@
   import type TResource from "./type";
   import type { TError } from "../../utils/types";
 
-  export let resourcePath = "{{name}}";
+  let { resourcePath = "{{name}}" }: { resourcePath?: string } = $props();
 
   const resource = createResourceStore<TResource>(resourcePath);
 

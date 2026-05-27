@@ -1,9 +1,15 @@
 <script lang="ts">
   export type LinkValue = string | { "@id": string; [key: string]: any };
 
-  export let items: LinkValue | LinkValue[];
-  export let basePath = "";
-  export let labelKey = "@id";
+  let {
+    items,
+    basePath = "",
+    labelKey = "@id",
+  }: {
+    items: LinkValue | LinkValue[];
+    basePath?: string;
+    labelKey?: string;
+  } = $props();
 
   const getId = (item: LinkValue) =>
     typeof item === "string" ? item : item["@id"];

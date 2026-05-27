@@ -12,16 +12,17 @@
   import type { TError } from "../../utils/types";
 
   const resource = retrieveResourceStore<TResource>();
-  let decodedId: string | null = null;
-
   const load = async (id: string) => {
     await resource.retrieve(id);
   };
 
-  $: decodedId = decodeRouteParam($page.params.id);
-  $: if (decodedId) {
-    void load(decodedId);
-  }
+  const decodedId = $derived(decodeRouteParam($page.url.searchParams.get("id") ?? undefined));
+
+  $effect(() => {
+    if (decodedId) {
+      void load(decodedId);
+    }
+  });
 
   const del = async () => {
     if (!$resource.retrieved || !window.confirm("Are you sure you want to delete this item?")) {
@@ -60,13 +61,13 @@
             <th scope="row">{{name}}</th>
             <td>
               {{#if isReferences}}
-                <Links items={$resource.retrieved['{{{name}}}']} basePath="/{{{reference.name}}}/show/" />
+                <Links items={$resource.retrieved['{{{name}}}']} basePath="/{{{reference.name}}}/show?id=" />
               {{else if reference}}
-                <Links items={$resource.retrieved["{{{name}}}"] as string} basePath="/{{{reference.name}}}/show/" />
+                <Links items={$resource.retrieved["{{{name}}}"] as string} basePath="/{{{reference.name}}}/show?id=" />
               {{else if isEmbeddeds}}
-                <Links items={$resource.retrieved["{{{name}}}"]} basePath="/{{{embedded.name}}}/show/" />
+                <Links items={$resource.retrieved["{{{name}}}"]} basePath="/{{{embedded.name}}}/show?id=" />
               {{else if embedded}}
-                <Links items={$resource.retrieved["{{{name}}}"]} basePath="/{{{embedded.name}}}/show/" />
+                <Links items={$resource.retrieved["{{{name}}}"]} basePath="/{{{embedded.name}}}/show?id=" />
               {{else}}
                 {$resource.retrieved['{{{name}}}']}
               {{/if}}

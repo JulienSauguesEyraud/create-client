@@ -30,6 +30,8 @@ export default class SvelteKitGenerator extends BaseGenerator {
       "interfaces/foo.ts",
 
       // components
+      "components/Home.svelte",
+      "components/Layout.svelte",
       "components/foo/Create.svelte",
       "components/foo/Form.svelte",
       "components/foo/index.ts",
@@ -45,10 +47,9 @@ export default class SvelteKitGenerator extends BaseGenerator {
       "routes/+layout.ts",
       "routes/+page.svelte",
       "routes/foo/+page.svelte",
-      "routes/foo/[page]/+page.svelte",
       "routes/foo/create/+page.svelte",
-      "routes/foo/edit/[id]/+page.svelte",
-      "routes/foo/show/[id]/+page.svelte",
+      "routes/foo/edit/+page.svelte",
+      "routes/foo/show/+page.svelte",
     ]);
 
     handlebars.registerHelper("compare", hbhComparison.compare);
@@ -65,19 +66,16 @@ export default class SvelteKitGenerator extends BaseGenerator {
     console.log(
       chalk.green(`
 /
-  +layout.svelte
-  +layout.ts
-  +page.svelte
+  Layout.svelte
+  Home.svelte
 /${titleLc}
-  +page.svelte
-/${titleLc}/[page]
-  +page.svelte
+  List.svelte
 /${titleLc}/create
-  +page.svelte
-/${titleLc}/edit/[id]
-  +page.svelte
-/${titleLc}/show/[id]
-  +page.svelte
+  Create.svelte
+/${titleLc}/edit
+  Update.svelte
+/${titleLc}/show
+  Show.svelte
 `)
     );
   }
@@ -86,6 +84,7 @@ export default class SvelteKitGenerator extends BaseGenerator {
     const lc = resource.title.toLowerCase();
     const ucf = this.ucFirst(resource.title);
     const fields = this.parseFields(resource);
+    const sourceDir = `${dir}/src`;
 
     const context = {
       name: resource.name,
@@ -105,17 +104,16 @@ export default class SvelteKitGenerator extends BaseGenerator {
     // Create directories
     // These directories may already exist
     [
-      `${dir}/routes`,
-      `${dir}/utils`,
-      `${dir}/config`,
-      `${dir}/interfaces`,
-      `${dir}/routes/${resource.name}`,
-      `${dir}/routes/${resource.name}/[page]`,
-      `${dir}/routes/${resource.name}/create`,
-      `${dir}/routes/${resource.name}/edit/[id]`,
-      `${dir}/routes/${resource.name}/show/[id]`,
-      `${dir}/components/${ucf}`,
-      `${dir}/stores`,
+      `${sourceDir}/routes`,
+      `${sourceDir}/utils`,
+      `${sourceDir}/config`,
+      `${sourceDir}/interfaces`,
+      `${sourceDir}/routes/${resource.name}`,
+      `${sourceDir}/routes/${resource.name}/create`,
+      `${sourceDir}/routes/${resource.name}/edit`,
+      `${sourceDir}/routes/${resource.name}/show`,
+      `${sourceDir}/components/${ucf}`,
+      `${sourceDir}/stores`,
     ].forEach((dir) => this.createDir(dir, false));
 
     [
@@ -129,7 +127,7 @@ export default class SvelteKitGenerator extends BaseGenerator {
       "components/%s/Show.svelte",
       "components/Links.svelte",
     ].forEach((pattern) =>
-      this.createFileFromPattern(pattern, dir, [ucf], context)
+      this.createFileFromPattern(pattern, sourceDir, [ucf], context)
     );
 
     [
@@ -138,22 +136,26 @@ export default class SvelteKitGenerator extends BaseGenerator {
       "routes/+layout.ts",
       "routes/+page.svelte",
       "routes/%s/+page.svelte",
-      "routes/%s/[page]/+page.svelte",
       "routes/%s/create/+page.svelte",
-      "routes/%s/edit/[id]/+page.svelte",
-      "routes/%s/show/[id]/+page.svelte",
+      "routes/%s/edit/+page.svelte",
+      "routes/%s/show/+page.svelte",
     ].forEach((pattern) => {
       if (pattern.includes("%s")) {
-        this.createFileFromPattern(pattern, dir, [resource.name], context);
+        this.createFileFromPattern(
+          pattern,
+          sourceDir,
+          [resource.name],
+          context
+        );
         return;
       }
 
-      this.createFile(pattern, `${dir}/${pattern}`, context, false);
+      this.createFile(pattern, `${sourceDir}/${pattern}`, context, false);
     });
     // interface pattern should be camel cased
     this.createFile(
       "interfaces/foo.ts",
-      `${dir}/interfaces/${context.ucf}.ts`,
+      `${sourceDir}/interfaces/${context.ucf}.ts`,
       context
     );
 
@@ -166,6 +168,8 @@ export default class SvelteKitGenerator extends BaseGenerator {
       "interfaces/Collection.ts",
 
       // components
+      "components/Home.svelte",
+      "components/Layout.svelte",
       "components/Pagination.svelte",
 
       // stores / services
@@ -182,11 +186,11 @@ export default class SvelteKitGenerator extends BaseGenerator {
       "utils/sveltekit.ts",
       "utils/types.ts",
     ].forEach((file) =>
-      this.createFile(file, `${dir}/${file}`, context, false)
+      this.createFile(file, `${sourceDir}/${file}`, context, false)
     );
 
     // API config
-    this.createEntrypoint(api.entrypoint, `${dir}/config/entrypoint.ts`);
+    this.createEntrypoint(api.entrypoint, `${sourceDir}/config/entrypoint.ts`);
   }
 
   getDescription(field) {

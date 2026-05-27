@@ -3,9 +3,15 @@
   import type TResource from "./type";
   import type { TError } from "../../utils/types";
 
-  export let onSubmit: (item: Partial<TResource>) => any = () => undefined;
-  export let initialValues: Partial<TResource> = {};
-  export let error: TError = null;
+  let {
+    onSubmit = () => undefined,
+    initialValues = {},
+    error = null,
+  }: {
+    onSubmit?: (item: Partial<TResource>) => any;
+    initialValues?: Partial<TResource>;
+    error?: TError;
+  } = $props();
 
   let values: Record<string, any> = {
 {{#each formFields}}
