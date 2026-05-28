@@ -15,7 +15,12 @@
 
   let values: Record<string, any> = {
 {{#each formFields}}
-  {{{name}}}: initialValues["{{name}}"]{{#if isEmbeddeds}}?.map((emb: any) => emb["@id"]).join(",") ?? ""{{else if isReferences}}?.join(",") ?? ""{{else if embedded}}?.["@id"] ?? ""{{else if reference}} ?? ""{{else}} ?? ""{{/if}},
+  {{{name}}}: initialValues["{{name}}"]
+  {{#if isEmbeddeds}}?.map((emb: any) => emb["@id"]).join(",") ?? ""
+  {{else if isReferences}}?.join(",") ?? ""
+  {{else if embedded}}?.["@id"] ?? ""
+  {{else if reference}} ?? ""
+  {{else}} ?? ""{{/if}},
 {{/each}}
   };
 

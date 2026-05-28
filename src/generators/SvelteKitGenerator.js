@@ -198,10 +198,6 @@ export default class SvelteKitGenerator extends BaseGenerator {
   }
 
   parseFields(resource) {
-    const writableFieldNames = new Set(
-      resource.writableFields.map((field) => field.name)
-    );
-
     const fields = [
       ...resource.writableFields,
       ...resource.readableFields,
@@ -221,7 +217,7 @@ export default class SvelteKitGenerator extends BaseGenerator {
           ...field,
           type: this.getType(field),
           description: this.getDescription(field),
-          readonly: !writableFieldNames.has(field.name),
+          readonly: false,
           isReferences,
           isEmbeddeds,
           isRelations: isEmbeddeds || isReferences,
