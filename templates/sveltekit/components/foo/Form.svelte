@@ -35,6 +35,8 @@
 
     onSubmit(payload as Partial<TResource>);
   };
+
+  const toNumberValue = (value: string) => (value === "" ? undefined : Number(value));
 </script>
 
 <form on:submit|preventDefault={handleSubmit}>
@@ -48,8 +50,16 @@
       type="{{{type}}}"
       {{#if step}}step="{{{step}}}"{{/if}}
       {{#if required}}required{{/if}}
+{{#if (compare type "==" "checkbox")}}
+      checked={Boolean(values["{{{name}}}"])}
+      on:change={(event) => values["{{{name}}}"] = (event.currentTarget as HTMLInputElement).checked}
+{{else if number}}
+      value={values["{{{name}}}"]}
+      on:input={(event) => values["{{{name}}}"] = toNumberValue((event.currentTarget as HTMLInputElement).value)}
+{{else}}
       value={values["{{{name}}}"]}
       on:input={(event) => values["{{{name}}}"] = (event.currentTarget as HTMLInputElement).value}
+{{/if}}
     />
   </div>
 {{/each}}
