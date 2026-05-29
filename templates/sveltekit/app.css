@@ -75,3 +75,87 @@ a:hover {
 .hero h1 {
   margin-top: 0;
 }
+
+.action-buttons {
+  margin-top: 1rem;
+  gap: 0.5rem;
+}
+
+.btn {
+  padding: 0.75rem;
+  border-radius: 8px;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-show {
+  background: #1b5fd1;
+  color: #fff;
+}
+
+.btn-edit {
+  background: #ffc107;
+  color: #0f172a;
+}
+
+.btn-delete {
+  background: #e53e3e;
+  color: #fff;
+}
+
+.btn-create {
+  background: #38a169;
+  color: #fff;
+}
+
+/* Detail / show page styles */
+.detail {
+  padding: 1.25rem;
+  border: 1px solid #e6edf6;
+  border-radius: 10px;
+  background: #ffffff;
+}
+
+.detail-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.detail-table tbody td {
+  padding: 1rem;
+  border: 1px solid #e6edf6;
+}
+
+.detail-table tbody td:first-child {
+  font-weight: 700;
+}
+
+.detail-table tbody tr:nth-child(odd) td {
+  background: #f1f5f9;
+}
+
+.btn-submit {
+  background: #66a3dc;
+  color: #fff;
+}
+
+@media (max-width: 640px) {
+  .detail-table thead {
+    display: none;
+  }
+
+  .detail-table tbody tr {
+    display: block;
+    margin-bottom: 0.6rem;
+  }
+
+  .detail-table tbody td {
+    display: block;
+  }
+
+  .action-buttons { 
+    display: flex; 
+    flex-wrap: wrap; 
+  }
+}

@@ -54,7 +54,7 @@
   {/if}
 
   <p>
-    <a href={toResourceCreatePath(resourceName)} class="btn btn-primary">Create</a>
+    <a href={toResourceCreatePath(resourceName)} class="btn btn-create">Create</a>
   </p>
 
   <table class="table table-responsive table-striped table-hover">

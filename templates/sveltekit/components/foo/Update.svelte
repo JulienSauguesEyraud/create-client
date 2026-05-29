@@ -58,6 +58,6 @@
     <Form onSubmit={update} error={$resource.error} initialValues={$resource.retrieved} />
   {/if}
 
-  <a href={toResourcePath("{{{name}}}")} class="btn btn-primary">Back to list</a>
-  <button type="button" on:click={del} class="btn btn-danger">Delete</button>
+  <a href={toResourcePath("{{{name}}}")} class="btn btn-show">Back to list</a>
+  <button type="button" on:click={del} class="btn btn-delete">Delete</button>
 </div>

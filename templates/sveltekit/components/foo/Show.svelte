@@ -37,7 +37,7 @@
   };
 </script>
 
-<div>
+<div class="detail">
   <h1>Show {{{ucf}}} {$resource.retrieved && $resource.retrieved["@id"]}</h1>
 
   {#if $resource.loading}
@@ -48,7 +48,7 @@
   {/if}
 
   {#if $resource.retrieved}
-    <table class="table table-responsive table-striped table-hover">
+    <table class="detail-table">
       <thead>
         <tr>
           <th>Field</th>
@@ -58,7 +58,7 @@
       <tbody>
         {{#each fields}}
           <tr>
-            <th scope="row">{{name}}</th>
+            <td>{{name}}</td>
             <td>
               {{#if isReferences}}
                 <Links items={$resource.retrieved['{{{name}}}']} basePath="/{{{reference.name}}}/show?id=" />
@@ -78,9 +78,11 @@
     </table>
   {/if}
 
-  <a href={toResourcePath("{{{name}}}")} class="btn btn-primary">Back to list</a>
-  {#if $resource.retrieved}
-    <a href={toResourceEditPath("{{{name}}}", $resource.retrieved["@id"] as string)} class="btn btn-warning">Edit</a>
-  {/if}
-  <button type="button" on:click={del} class="btn btn-danger">Delete</button>
+  <div class="action-buttons">
+    <a href={toResourcePath("{{{name}}}")} class="btn btn-show">Back to list</a>
+    {#if $resource.retrieved}
+      <a href={toResourceEditPath("{{{name}}}", $resource.retrieved["@id"] as string)} class="btn btn-edit">Edit</a>
+    {/if}
+    <button type="button" on:click={del} class="btn btn-delete">Delete</button>
+  </div>
 </div>

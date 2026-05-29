@@ -68,5 +68,5 @@
     <div class="alert alert-danger" role="alert">{error.message}</div>
   {/if}
 
-  <button type="submit" class="btn btn-success">Submit</button>
+  <button type="submit" class="btn btn-submit">Submit</button>
 </form>
