@@ -92,7 +92,7 @@ export default class SvelteKitGenerator extends BaseGenerator {
       uc: resource.title.toUpperCase(),
       ucf,
       fields,
-      formFields: this.buildFields(fields),
+      formFields: this.buildFields(fields.filter((f) => !f.readonly)),
       hasRelations: fields.some((field) => field.reference || field.embedded),
       hasManyRelations: fields.some(
         (field) => field.isReferences || field.isEmbeddeds
@@ -198,6 +198,10 @@ export default class SvelteKitGenerator extends BaseGenerator {
   }
 
   parseFields(resource) {
+    const writableFieldNames = new Set(
+      resource.writableFields.map((field) => field.name)
+    );
+
     const fields = [
       ...resource.writableFields,
       ...resource.readableFields,
@@ -217,7 +221,7 @@ export default class SvelteKitGenerator extends BaseGenerator {
           ...field,
           type: this.getType(field),
           description: this.getDescription(field),
-          readonly: false,
+          readonly: !writableFieldNames.has(field.name),
           isReferences,
           isEmbeddeds,
           isRelations: isEmbeddeds || isReferences,
