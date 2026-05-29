@@ -39,7 +39,7 @@
   const toNumberValue = (value: string) => (value === "" ? undefined : Number(value));
 </script>
 
-<form on:submit|preventDefault={handleSubmit}>
+<form class="form" on:submit|preventDefault={handleSubmit}>
 {{#each formFields}}
   <div class="form-group">
     <label class="form-label" for="{{{name}}}">{{{name}}}</label>

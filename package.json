@@ -42,6 +42,7 @@
   "dependencies": {
     "@api-platform/api-doc-parser": "^0.16.10",
     "@babel/runtime": "^7.0.0",
+    "bootstrap": "^5.3.8",
     "chalk": "^5.0.0",
     "commander": "^10.0.0",
     "esutils": "^2.0.0",

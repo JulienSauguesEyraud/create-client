@@ -40,7 +40,7 @@
   <header class="app-header">
     <a class="app-brand" href="/">API Platform</a>
 
-    <nav class="app-nav" aria-label="Main navigation">
+    <nav aria-label="Main navigation">
       <a href="/">Home</a>
     </nav>
   </header>

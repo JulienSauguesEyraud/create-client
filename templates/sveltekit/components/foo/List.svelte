@@ -43,7 +43,7 @@
   });
 </script>
 
-<div>
+<div class="detail">
   <h1>{resourceTitle} List</h1>
 
   {#if $resource.loading}
@@ -53,11 +53,11 @@
     <div class="alert alert-danger">{$resource.error.message}</div>
   {/if}
 
-  <p>
+  <div class="action-buttons">
     <a href={toResourceCreatePath(resourceName)} class="btn btn-create">Create</a>
-  </p>
+  </div>
 
-  <table class="table table-responsive table-striped table-hover">
+  <table class="detail-table">
     <thead>
       <tr>
         <th>id</th>
@@ -88,14 +88,14 @@
               {{/if}}
             </td>
           {{/each}}
-          <td>
-            <a href={toResourceShowPath(resourceName, item["@id"] as string)}>
+          <td class="action-list">
+            <a href={toResourceShowPath(resourceName, item["@id"] as string)} class="btn btn-show">
               <span class="fa fa-search" aria-hidden="true" />
               <span class="sr-only">Show</span>
             </a>
           </td>
-          <td>
-            <a href={toResourceEditPath(resourceName, item["@id"] as string)}>
+          <td class="action-list">
+            <a href={toResourceEditPath(resourceName, item["@id"] as string)} class="btn btn-edit">
               <span class="fa fa-pencil" aria-hidden="true" />
               <span class="sr-only">Edit</span>
             </a>
