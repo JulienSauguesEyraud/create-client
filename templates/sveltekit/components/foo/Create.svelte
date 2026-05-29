@@ -2,7 +2,7 @@
   import Form from "./Form.svelte";
   import { createResourceStore } from "../../stores";
   import {
-    redirectToResourceEditPath,
+    redirectToResourceShowPath,
     toResourcePath,
   } from "../../utils/sveltekit";
   import type TResource from "./type";
@@ -17,9 +17,10 @@
       await resource.create(item);
 
       if ($resource.created) {
-        await redirectToResourceEditPath(
+        await redirectToResourceShowPath(
           resourcePath,
-          $resource.created["@id"] as string
+          $resource.created["@id"] as string,
+          "created"
         );
       }
     } catch {

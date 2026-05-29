@@ -99,7 +99,19 @@ export const fetchApi = (input: RequestInfo, init: RequestInit = {}) => {
   );
 
   if (init.method === "DELETE") {
-    return fetch(input, init).then((response) => ({ response, json: null }));
+    return fetch(input, init).then(async (response) => {
+      if (!response.ok) {
+        try {
+          const json = await response.json();
+          submissionHandler(response, json);
+          regularHandler(response, json);
+        } catch {
+          throw new Error(response.statusText || "An error occurred.");
+        }
+      }
+
+      return { response, json: null };
+    });
   }
 
   return fetch(input, init)

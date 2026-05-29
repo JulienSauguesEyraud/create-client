@@ -5,6 +5,7 @@
   import {
     decodeRouteParam,
     redirectToResourcePath,
+    redirectToResourceShowPath,
     toResourcePath,
   } from "../../utils/sveltekit";
   import type TResource from "./type";
@@ -28,7 +29,19 @@
       return;
     }
 
-    await resource.update($resource.retrieved, values);
+    try {
+      await resource.update($resource.retrieved, values);
+
+      if ($resource.updated) {
+        await redirectToResourceShowPath(
+          "{{{name}}}",
+          $resource.updated["@id"] as string,
+          "updated"
+        );
+      }
+    } catch {
+      // state is exposed by the store
+    }
   };
 
   const del = async () => {
@@ -36,10 +49,14 @@
       return;
     }
 
-    await resource.del($resource.retrieved);
+    try {
+      await resource.del($resource.retrieved);
 
-    if ($resource.deleted) {
-      await redirectToResourcePath("{{{name}}}");
+      if ($resource.deleted) {
+        await redirectToResourcePath("{{{name}}}", "deleted");
+      }
+    } catch {
+      // state is exposed by the store
     }
   };
 </script>
@@ -49,9 +66,6 @@
 
   {#if $resource.loading}
     <div class="alert alert-info" role="status">Loading...</div>
-  {/if}
-  {#if $resource.error}
-    <div class="alert alert-danger" role="alert">{$resource.error.message}</div>
   {/if}
 
   {#if $resource.retrieved}

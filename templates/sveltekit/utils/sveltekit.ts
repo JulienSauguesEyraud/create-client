@@ -19,8 +19,26 @@ export const toResourceShowPath = (resourceName: string, id: string): string =>
 export const toResourceEditPath = (resourceName: string, id: string): string =>
   `${toResourcePath(resourceName)}/edit?id=${encodeURIComponent(id)}`;
 
-export const redirectToResourcePath = (resourceName: string) =>
-  goto(toResourcePath(resourceName));
+export const redirectToResourcePath = (
+  resourceName: string,
+  success?: "deleted"
+) =>
+  goto(
+    success
+      ? `${toResourcePath(resourceName)}?success=${encodeURIComponent(success)}`
+      : toResourcePath(resourceName)
+  );
+
+export const redirectToResourceShowPath = (
+  resourceName: string,
+  id: string,
+  success?: "created" | "updated"
+) =>
+  goto(
+    success
+      ? `${toResourceShowPath(resourceName, id)}&success=${encodeURIComponent(success)}`
+      : toResourceShowPath(resourceName, id)
+  );
 
 export const redirectToResourceEditPath = (resourceName: string, id: string) =>
   goto(toResourceEditPath(resourceName, id));

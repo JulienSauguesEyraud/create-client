@@ -31,6 +31,10 @@
   const pageParam = $derived(
     decodeRouteParam($page.url.searchParams.get("page") ?? undefined)
   );
+  const success = $derived($page.url.searchParams.get("success"));
+  const successMessage = $derived(
+    success === "deleted" ? "Resource deleted successfully." : null
+  );
   const currentPage = $derived(pageParam || resourcePath);
   const items = $derived(
     ($resource.retrieved && $resource.retrieved["{{hydraPrefix}}member"]) || []
@@ -51,6 +55,9 @@
   {/if}
   {#if $resource.error}
     <div class="alert alert-danger">{$resource.error.message}</div>
+  {/if}
+  {#if successMessage}
+    <div class="alert alert-success" role="status">{successMessage}</div>
   {/if}
 
   <div class="action-buttons mb-3">

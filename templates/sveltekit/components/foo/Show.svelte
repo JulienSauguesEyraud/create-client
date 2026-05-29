@@ -17,6 +17,14 @@
   };
 
   const decodedId = $derived(decodeRouteParam($page.url.searchParams.get("id") ?? undefined));
+  const success = $derived($page.url.searchParams.get("success"));
+  const successMessage = $derived(
+    success === "created"
+      ? "Resource created successfully."
+      : success === "updated"
+        ? "Resource updated successfully."
+        : null
+  );
 
   $effect(() => {
     if (decodedId) {
@@ -29,10 +37,14 @@
       return;
     }
 
-    await resource.del($resource.retrieved);
+    try {
+      await resource.del($resource.retrieved);
 
-    if ($resource.deleted) {
-      await redirectToResourcePath("{{{name}}}");
+      if ($resource.deleted) {
+        await redirectToResourcePath("{{{name}}}", "deleted");
+      }
+    } catch {
+      // state is exposed by the store
     }
   };
 </script>
@@ -45,6 +57,9 @@
   {/if}
   {#if $resource.error}
     <div class="alert alert-danger" role="alert">{$resource.error.message}</div>
+  {/if}
+  {#if successMessage}
+    <div class="alert alert-success" role="status">{successMessage}</div>
   {/if}
 
   {#if $resource.retrieved}
