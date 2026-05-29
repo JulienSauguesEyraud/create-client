@@ -47,7 +47,7 @@
   });
 </script>
 
-<div class="detail">
+<div>
   <h1>{resourceTitle} List</h1>
 
   {#if $resource.loading}
@@ -60,7 +60,7 @@
     <div class="alert alert-success" role="status">{successMessage}</div>
   {/if}
 
-  <div class="action-buttons mb-3">
+  <div class="mb-3">
     <a href={toResourceCreatePath(resourceName)}  class="btn btn-success" role="button">Create</a>
   </div>
 

@@ -39,7 +39,7 @@
   const toNumberValue = (value: string) => (value === "" ? undefined : Number(value));
 </script>
 
-<form class="form" on:submit|preventDefault={handleSubmit}>
+<form class="mb-3" on:submit|preventDefault={handleSubmit}>
 {{#each formFields}}
 {{#if (compare type "==" "checkbox")}}
   <div class="form-check mb-3">
@@ -79,5 +79,5 @@
     <div class="alert alert-danger" role="alert">{error.message}</div>
   {/if}
 
-  <button type="submit" class="btn btn-secondary mb-3">Submit</button>
+  <button type="submit" class="btn btn-secondary">Submit</button>
 </form>

@@ -49,7 +49,7 @@
   };
 </script>
 
-<div class="detail">
+<div>
   <h1>Show {{{ucf}}} {$resource.retrieved && $resource.retrieved["@id"]}</h1>
 
   {#if $resource.loading}
