@@ -36,7 +36,6 @@ test("Generate a SvelteKit app", () => {
 
   generator.generate(api, resource, tmpobj.name);
   [
-    "/app.css",
     "/utils/dataAccess.ts",
     "/utils/types.ts",
     "/utils/sveltekit.ts",

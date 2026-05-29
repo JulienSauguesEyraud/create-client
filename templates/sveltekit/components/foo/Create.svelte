@@ -40,5 +40,5 @@
 
   <Form onSubmit={create} error={$resource.error} />
 
-  <a href={toResourcePath(resourcePath)} class="btn btn-show">Back to list</a>
+  <a href={toResourcePath(resourcePath)} class="btn btn-primary" role="button">Back to list</a>
 </div>

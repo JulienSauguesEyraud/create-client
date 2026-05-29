@@ -1,7 +1,59 @@
 <script lang="ts">
-  import Layout from "../components/Layout.svelte";
+  import { onMount } from "svelte";
+  import { setAuth } from "../stores";
+  import "bootstrap/dist/css/bootstrap.min.css";
+  import bootstrapJs from "bootstrap/dist/js/bootstrap.bundle.min.js?url";
+
+  const authStorageKey = "api-platform-auth";
+  const authEventName = "api-platform-auth-changed";
+
+  const asAuthHeader = (token: string | null) => (token ? `Bearer ${token}` : "");
+
+  const syncAuth = (token: string | null) => {
+    setAuth(asAuthHeader(token));
+  };
+
+  onMount(() => {
+    syncAuth(localStorage.getItem(authStorageKey));
+
+    const onStorage = (event: StorageEvent) => {
+      if (event.key === authStorageKey) {
+        syncAuth(event.newValue);
+      }
+    };
+
+    const onAuthChange = (event: Event) => {
+      const customEvent = event as CustomEvent<{ token?: string | null }>;
+      syncAuth(customEvent.detail?.token ?? null);
+    };
+
+    window.addEventListener("storage", onStorage);
+    window.addEventListener(authEventName, onAuthChange as EventListener);
+
+    return () => {
+      window.removeEventListener("storage", onStorage);
+      window.removeEventListener(authEventName, onAuthChange as EventListener);
+    };
+  });
 </script>
 
-<Layout>
-  <slot />
-</Layout>
+<svelte:head>
+  <link rel="icon" href="/favicon.png" />
+  <script src={bootstrapJs}></script>
+</svelte:head>
+
+<div class="vh-100" style="padding-top: 48px">
+  <header class="navbar navbar-expand-lg navbar-light bg-light fixed-top border-bottom">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-semibold" href="/">API Platform</a>
+
+      <nav class="navbar-nav" aria-label="Main navigation">
+        <a class="nav-link" href="/">Home</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container py-4">
+    <slot />
+  </main>
+</div>

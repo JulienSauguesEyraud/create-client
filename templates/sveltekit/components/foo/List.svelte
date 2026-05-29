@@ -53,18 +53,18 @@
     <div class="alert alert-danger">{$resource.error.message}</div>
   {/if}
 
-  <div class="action-buttons">
-    <a href={toResourceCreatePath(resourceName)} class="btn btn-create">Create</a>
+  <div class="action-buttons mb-3">
+    <a href={toResourceCreatePath(resourceName)}  class="btn btn-success" role="button">Create</a>
   </div>
 
-  <table class="detail-table">
+  <table class="table table-striped">
     <thead>
-      <tr>
-        <th>id</th>
+      <tr class="table-primary">
+        <th scope="col">id</th>
         {{#each fields}}
-          <th>{{name}}</th>
+          <th scope="col">{{name}}</th>
         {{/each}}
-        <th colSpan={2} />
+        <th scope="col" colSpan={2} />
       </tr>
     </thead>
     <tbody>
@@ -88,14 +88,14 @@
               {{/if}}
             </td>
           {{/each}}
-          <td class="action-list">
-            <a href={toResourceShowPath(resourceName, item["@id"] as string)} class="btn btn-show">
+          <td>
+            <a href={toResourceShowPath(resourceName, item["@id"] as string)}  class="btn btn-info" role="button">
               <span class="fa fa-search" aria-hidden="true" />
               <span class="sr-only">Show</span>
             </a>
           </td>
-          <td class="action-list">
-            <a href={toResourceEditPath(resourceName, item["@id"] as string)} class="btn btn-edit">
+          <td>
+            <a href={toResourceEditPath(resourceName, item["@id"] as string)}  class="btn btn-warning" role="button">
               <span class="fa fa-pencil" aria-hidden="true" />
               <span class="sr-only">Edit</span>
             </a>

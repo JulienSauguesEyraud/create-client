@@ -8,9 +8,6 @@ export default class SvelteKitGenerator extends BaseGenerator {
     super(params);
 
     this.registerTemplates("sveltekit/", [
-      // app shell
-      "app.css",
-
       // utils
       "utils/dataAccess.ts",
       "utils/sveltekit.ts",
@@ -161,9 +158,6 @@ export default class SvelteKitGenerator extends BaseGenerator {
 
     // copy with regular name
     [
-      // app shell
-      "app.css",
-
       // interfaces
       "interfaces/Collection.ts",
 

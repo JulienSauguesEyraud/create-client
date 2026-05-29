@@ -41,8 +41,20 @@
 
 <form class="form" on:submit|preventDefault={handleSubmit}>
 {{#each formFields}}
-  <div class="form-group">
-    <label class="form-label" for="{{{name}}}">{{{name}}}</label>
+{{#if (compare type "==" "checkbox")}}
+  <div class="form-check mb-3">
+    <input
+      id="{{{name}}}"
+      class="form-check-input"
+      type="checkbox"
+      {{#if required}}required{{/if}}
+      checked={Boolean(values["{{{name}}}"])}
+      on:change={(event) => values["{{{name}}}"] = (event.currentTarget as HTMLInputElement).checked}
+    />
+    <label class="form-check-label" for="{{{name}}}">{{{name}}}</label>
+  </div>
+{{else}}
+  <div class="form-floating mb-3">
     <input
       id="{{{name}}}"
       class="form-control"
@@ -50,10 +62,7 @@
       type="{{{type}}}"
       {{#if step}}step="{{{step}}}"{{/if}}
       {{#if required}}required{{/if}}
-{{#if (compare type "==" "checkbox")}}
-      checked={Boolean(values["{{{name}}}"])}
-      on:change={(event) => values["{{{name}}}"] = (event.currentTarget as HTMLInputElement).checked}
-{{else if number}}
+{{#if number}}
       value={values["{{{name}}}"]}
       on:input={(event) => values["{{{name}}}"] = toNumberValue((event.currentTarget as HTMLInputElement).value)}
 {{else}}
@@ -61,12 +70,14 @@
       on:input={(event) => values["{{{name}}}"] = (event.currentTarget as HTMLInputElement).value}
 {{/if}}
     />
+    <label for="{{{name}}}">{{{name}}}</label>
   </div>
+{{/if}}
 {{/each}}
 
   {#if error}
     <div class="alert alert-danger" role="alert">{error.message}</div>
   {/if}
 
-  <button type="submit" class="btn btn-submit">Submit</button>
+  <button type="submit" class="btn btn-secondary mb-3">Submit</button>
 </form>

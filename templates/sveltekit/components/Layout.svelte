@@ -1,7 +1,6 @@
 <script lang="ts">
   import { onMount } from "svelte";
   import { setAuth } from "../stores";
-  import "../app.css";
 
   const authStorageKey = "api-platform-auth";
   const authEventName = "api-platform-auth-changed";

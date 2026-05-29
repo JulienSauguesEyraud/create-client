@@ -48,11 +48,11 @@
   {/if}
 
   {#if $resource.retrieved}
-    <table class="detail-table">
+    <table class="table table-striped">
       <thead>
-        <tr>
-          <th>Field</th>
-          <th>Value</th>
+        <tr class="table-primary">
+          <th scope="col">Field</th>
+          <th scope="col">Value</th>
         </tr>
       </thead>
       <tbody>
@@ -78,11 +78,11 @@
     </table>
   {/if}
 
-  <div class="action-buttons">
-    <a href={toResourcePath("{{{name}}}")} class="btn btn-show">Back to list</a>
+  <div class="d-flex gap-1 flex-wrap">
+    <a href={toResourcePath("{{{name}}}")} class="btn btn-primary" role="button">Back to list</a>
     {#if $resource.retrieved}
-      <a href={toResourceEditPath("{{{name}}}", $resource.retrieved["@id"] as string)} class="btn btn-edit">Edit</a>
+      <a href={toResourceEditPath("{{{name}}}", $resource.retrieved["@id"] as string)} class="btn btn-warning" role="button">Edit</a>
     {/if}
-    <button type="button" on:click={del} class="btn btn-delete">Delete</button>
+    <button type="button" on:click={del} class="btn btn-danger" role="button">Delete</button>
   </div>
 </div>
