@@ -47,7 +47,7 @@ export const deleteResourceStore = <Resource extends ApiResource>() => {
         set({ loading: false, error: e as TError, deleted: null });
         throw e;
       } finally {
-        loadingOverlay.stop();
+        await loadingOverlay.stopAfter(250);
       }
     },
   };

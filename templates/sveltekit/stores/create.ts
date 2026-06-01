@@ -49,7 +49,7 @@ export const createResourceStore = <Resource extends ApiResource>(resource: stri
         set({ loading: false, error: e as TError, created: null });
         throw e;
       } finally {
-        loadingOverlay.stop();
+        await loadingOverlay.stopAfter(250);
       }
     },
   };

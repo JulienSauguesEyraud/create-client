@@ -49,7 +49,7 @@ export const updateResourceStore = <Resource extends ApiResource>() => {
         set({ loading: false, error: e as TError, retrieved: null, updated: null, deleted: null });
         throw e;
       } finally {
-        loadingOverlay.stop();
+        await loadingOverlay.stopAfter(250);
       }
     },
     async update(item: Resource, values: Partial<Resource>) {
@@ -79,7 +79,7 @@ export const updateResourceStore = <Resource extends ApiResource>() => {
         set({ loading: false, error: e as TError, retrieved: item, updated: null, deleted: null });
         throw e;
       } finally {
-        loadingOverlay.stop();
+        await loadingOverlay.stopAfter(250);
       }
     },
     async del(item: Resource) {
@@ -106,7 +106,7 @@ export const updateResourceStore = <Resource extends ApiResource>() => {
         set({ loading: false, error: e as TError, retrieved: item, updated: null, deleted: null });
         throw e;
       } finally {
-        loadingOverlay.stop();
+        await loadingOverlay.stopAfter(250);
       }
     },
   };

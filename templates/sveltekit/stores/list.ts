@@ -43,7 +43,7 @@ export const listResourceStore = <Resource extends ApiResource>(resource: string
         set({ loading: false, error: e as TError, retrieved: null });
         throw e;
       } finally {
-        loadingOverlay.stop();
+        await loadingOverlay.stopAfter(250);
       }
     },
   };

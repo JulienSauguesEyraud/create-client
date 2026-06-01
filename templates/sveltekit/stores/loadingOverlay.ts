@@ -9,6 +9,7 @@ export interface LoadingOverlayStore {
   subscribe: (run: (value: LoadingOverlayState) => void) => () => void;
   start: (controller: AbortController, message?: string) => void;
   stop: () => void;
+  stopAfter: (delayMs: number) => Promise<void>;
   abort: () => void;
 }
 
@@ -31,6 +32,11 @@ const stop = () => {
   set(initialState);
 };
 
+const stopAfter = async (delayMs: number) => {
+  await new Promise((resolve) => setTimeout(resolve, delayMs));
+  stop();
+};
+
 const abort = () => {
   activeController?.abort();
   stop();
@@ -40,6 +46,7 @@ export const loadingOverlayStore: LoadingOverlayStore = {
   subscribe,
   start,
   stop,
+  stopAfter,
   abort,
 };
 

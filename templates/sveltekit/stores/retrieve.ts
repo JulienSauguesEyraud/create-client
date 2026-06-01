@@ -47,7 +47,7 @@ export const retrieveResourceStore = <Resource extends ApiResource>() => {
         set({ loading: false, error: e as TError, retrieved: null, deleted: null });
         throw e;
       } finally {
-        loadingOverlay.stop();
+        await loadingOverlay.stopAfter(250);
       }
     },
     async del(item: Resource) {
@@ -74,7 +74,7 @@ export const retrieveResourceStore = <Resource extends ApiResource>() => {
         set({ loading: false, error: e as TError, retrieved: item, deleted: null });
         throw e;
       } finally {
-        loadingOverlay.stop();
+        await loadingOverlay.stopAfter(250);
       }
     },
   };
