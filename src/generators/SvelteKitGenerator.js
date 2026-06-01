@@ -18,6 +18,7 @@ export default class SvelteKitGenerator extends BaseGenerator {
       "stores/delete.ts",
       "stores/fetch.ts",
       "stores/index.ts",
+      "stores/loadingOverlay.ts",
       "stores/list.ts",
       "stores/retrieve.ts",
       "stores/update.ts",
@@ -29,6 +30,7 @@ export default class SvelteKitGenerator extends BaseGenerator {
       // components
       "components/Home.svelte",
       "components/Layout.svelte",
+      "components/LoadingOverlay.svelte",
       "components/foo/Create.svelte",
       "components/foo/Form.svelte",
       "components/foo/index.ts",
@@ -164,6 +166,7 @@ export default class SvelteKitGenerator extends BaseGenerator {
       // components
       "components/Home.svelte",
       "components/Layout.svelte",
+      "components/LoadingOverlay.svelte",
       "components/Pagination.svelte",
 
       // stores / services
@@ -171,6 +174,7 @@ export default class SvelteKitGenerator extends BaseGenerator {
       "stores/delete.ts",
       "stores/fetch.ts",
       "stores/index.ts",
+      "stores/loadingOverlay.ts",
       "stores/list.ts",
       "stores/retrieve.ts",
       "stores/update.ts",

@@ -1,6 +1,7 @@
 <script lang="ts">
   import { onMount } from "svelte";
   import { setAuth } from "../stores";
+  import LoadingOverlay from "../components/LoadingOverlay.svelte";
   import "bootstrap/dist/css/bootstrap.min.css";
   import bootstrapJs from "bootstrap/dist/js/bootstrap.bundle.min.js?url";
 
@@ -51,6 +52,8 @@
     </nav>
   </div>
 </header>
+
+<LoadingOverlay />
 
 <main class="container py-4">
   <slot />

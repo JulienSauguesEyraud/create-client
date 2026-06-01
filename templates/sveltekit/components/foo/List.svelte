@@ -50,9 +50,6 @@
 <div>
   <h1>{resourceTitle} List</h1>
 
-  {#if $resource.loading}
-    <div class="alert alert-info">Loading...</div>
-  {/if}
   {#if $resource.error}
     <div class="alert alert-danger">{$resource.error.message}</div>
   {/if}

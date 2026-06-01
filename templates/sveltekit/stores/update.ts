@@ -1,5 +1,6 @@
 import { writable } from "svelte/store";
 import { fetchApi } from "./fetch";
+import { loadingOverlay } from "./loadingOverlay";
 import type { ApiResource, TError } from "../utils/types";
 
 export interface UpdateStoreState<Resource extends ApiResource> {
@@ -27,27 +28,41 @@ export const updateResourceStore = <Resource extends ApiResource>() => {
       set(initialState);
     },
     async retrieve(id: string) {
+      const abortController = new AbortController();
+
       set({ loading: true, error: null, retrieved: null, updated: null, deleted: null });
+      loadingOverlay.start(abortController, "Loading resource...");
 
       try {
-        const { json } = await fetchApi(id);
+        const { json } = await fetchApi(id, { signal: abortController.signal });
         const retrieved = json as Resource;
 
         set({ loading: false, error: null, retrieved, updated: null, deleted: null });
 
         return retrieved;
       } catch (e) {
+        if ((e as { name?: string }).name === "AbortError") {
+          set({ loading: false, error: null, retrieved: null, updated: null, deleted: null });
+          return null;
+        }
+
         set({ loading: false, error: e as TError, retrieved: null, updated: null, deleted: null });
         throw e;
+      } finally {
+        loadingOverlay.stop();
       }
     },
     async update(item: Resource, values: Partial<Resource>) {
+      const abortController = new AbortController();
+
       set({ loading: true, error: null, retrieved: item, updated: null, deleted: null });
+      loadingOverlay.start(abortController, "Updating resource...");
 
       try {
         const { json } = await fetchApi((item as { "@id": string })["@id"], {
           method: "PUT",
           body: JSON.stringify(values),
+          signal: abortController.signal,
         });
 
         const updated = json as Resource;
@@ -56,22 +71,42 @@ export const updateResourceStore = <Resource extends ApiResource>() => {
 
         return updated;
       } catch (e) {
+        if ((e as { name?: string }).name === "AbortError") {
+          set({ loading: false, error: null, retrieved: item, updated: null, deleted: null });
+          return null;
+        }
+
         set({ loading: false, error: e as TError, retrieved: item, updated: null, deleted: null });
         throw e;
+      } finally {
+        loadingOverlay.stop();
       }
     },
     async del(item: Resource) {
+      const abortController = new AbortController();
+
       set({ loading: true, error: null, retrieved: item, updated: null, deleted: null });
+      loadingOverlay.start(abortController, "Deleting resource...");
 
       try {
-        await fetchApi((item as { "@id": string })["@id"], { method: "DELETE" });
+        await fetchApi((item as { "@id": string })["@id"], {
+          method: "DELETE",
+          signal: abortController.signal,
+        });
 
         set({ loading: false, error: null, retrieved: item, updated: null, deleted: item });
 
         return item;
       } catch (e) {
+        if ((e as { name?: string }).name === "AbortError") {
+          set({ loading: false, error: null, retrieved: item, updated: null, deleted: null });
+          return null;
+        }
+
         set({ loading: false, error: e as TError, retrieved: item, updated: null, deleted: null });
         throw e;
+      } finally {
+        loadingOverlay.stop();
       }
     },
   };

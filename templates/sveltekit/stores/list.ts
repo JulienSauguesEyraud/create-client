@@ -1,5 +1,6 @@
 import { writable } from "svelte/store";
 import { fetchApi } from "./fetch";
+import { loadingOverlay } from "./loadingOverlay";
 import type { ApiResource, TError } from "../utils/types";
 import type { PagedCollection } from "../interfaces/Collection";
 
@@ -24,15 +25,25 @@ export const listResourceStore = <Resource extends ApiResource>(resource: string
       set(initialState);
     },
     async list(page = resource) {
+      const abortController = new AbortController();
+
       set({ loading: true, error: null, retrieved: null });
+      loadingOverlay.start(abortController, "Loading resources...");
 
       try {
-        const { json } = await fetchApi(page);
+        const { json } = await fetchApi(page, { signal: abortController.signal });
 
         set({ loading: false, error: null, retrieved: json as PagedCollection<Resource> });
       } catch (e) {
+        if ((e as { name?: string }).name === "AbortError") {
+          set({ loading: false, error: null, retrieved: null });
+          return null;
+        }
+
         set({ loading: false, error: e as TError, retrieved: null });
         throw e;
+      } finally {
+        loadingOverlay.stop();
       }
     },
   };

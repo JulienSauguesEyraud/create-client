@@ -64,10 +64,6 @@
 <div>
   <h1>Edit {{{ucf}}} {$resource.retrieved && $resource.retrieved["@id"]}</h1>
 
-  {#if $resource.loading}
-    <div class="alert alert-info" role="status">Loading...</div>
-  {/if}
-
   {#if $resource.retrieved}
     <Form onSubmit={update} error={$resource.error} initialValues={$resource.retrieved} />
   {/if}

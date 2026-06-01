@@ -32,9 +32,6 @@
 <div>
   <h1>Create {{{title}}}</h1>
 
-  {#if $resource.loading}
-    <div class="alert alert-info" role="status">Loading...</div>
-  {/if}
   {#if $resource.error}
     <div class="alert alert-danger" role="alert">{$resource.error.message}</div>
   {/if}
